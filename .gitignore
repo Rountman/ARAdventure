@@ -63,3 +63,6 @@ crashlytics-build.properties
 
 # Word Auto Backup File
 Backup of *.doc*
+
+# DS_Store
+.DS_Store
