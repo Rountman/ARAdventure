@@ -11,12 +11,8 @@ public class SpawnableScript : MonoBehaviour
     [SerializeField]
     GameObject spawnedPrefab;
 
-    Camera arCam;
-
-    // Start is called before the first frame update
     void Start()
     {
-        arCam = GameObject.Find("AR Camera").GetComponent<Camera>();
     }
 
     // Update is called once per frame
@@ -26,8 +22,6 @@ public class SpawnableScript : MonoBehaviour
         {
             return;
         }
-
-        Ray ray = arCam.ScreenPointToRay(Input.GetTouch(0).position);
 
         if (m_RaycastManager.Raycast(Input.GetTouch(0).position, m_Hits))
         {
