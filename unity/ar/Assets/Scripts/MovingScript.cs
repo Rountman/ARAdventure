@@ -23,12 +23,9 @@ public class SpawnableScript : MonoBehaviour
             return;
         }
 
-        if (m_RaycastManager.Raycast(Input.GetTouch(0).position, m_Hits))
+        if (m_RaycastManager.Raycast(Input.GetTouch(0).position, m_Hits) && Input.GetTouch(0).phase == TouchPhase.Began && m_Hits[0].trackable is ARPlane plane)
         {
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
-            {
-                spawnedPrefab.transform.position = m_Hits[0].pose.position;
-            }
+            spawnedPrefab.transform.position = m_Hits[0].pose.position;
         }
     }
 }
