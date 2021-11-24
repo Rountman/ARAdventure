@@ -184,7 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_RaycastManager: {fileID: 432410705}
-  spawnedPrefab: {fileID: 919132149012415075}
+  spawnedPrefab: {fileID: 4940071759242993674}
 --- !u!114 &432410705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,11 +484,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &919132149012415075 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5210595253699535466, guid: 02263ab26811840e2af2e816c864ef3b, type: 3}
-  m_PrefabInstance: {fileID: 4940071759242993673}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4940071759242993673
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -550,3 +545,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02263ab26811840e2af2e816c864ef3b, type: 3}
+--- !u!1 &4940071759242993674 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5210595253699535466, guid: 02263ab26811840e2af2e816c864ef3b, type: 3}
+  m_PrefabInstance: {fileID: 4940071759242993673}
+  m_PrefabAsset: {fileID: 0}
