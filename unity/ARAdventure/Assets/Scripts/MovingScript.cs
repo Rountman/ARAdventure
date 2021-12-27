@@ -10,28 +10,49 @@ public class MovingScript : MonoBehaviour
     [SerializeField]
     GameObject spawnedPrefab;
     List<ARRaycastHit> m_Hits = new List<ARRaycastHit>();
+    Vector3 previousPos;
+    Vector3 finalPos;
+    Quaternion Angle;
+    float ratio;
+    float duration;
+    float multiplier;
 
     void Start()
     {
+        previousPos = new Vector3(0f, -0.2f, 0.5f); //helicopter starting location
+        finalPos = new Vector3();
+        duration = 0.9f;    //animation duration control
+        multiplier = 1 / duration;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount == 0)
-            return;
-
-        else
+        if (Input.touchCount > 0 && spawnedPrefab.transform.position == finalPos)
         {
-            m_RaycastManager.Raycast(Input.GetTouch(0).position, m_Hits);
+            Touch touch = Input.GetTouch(0);
 
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
+            if (touch.phase == TouchPhase.Began)
             {
+                m_RaycastManager.Raycast(touch.position, m_Hits);
+
                 if (m_Hits[0].trackable is ARPlane plane)
                 {
-                    spawnedPrefab.transform.position = m_Hits[0].pose.position;
+                    previousPos = finalPos;
+                    ratio = 0;
+                    
+                    finalPos = m_Hits[0].pose.position;
+                    Angle.SetFromToRotation(previousPos, finalPos);
+                    Debug.Log(Angle);
                 }
             }
+        }
+
+        if (spawnedPrefab.transform.position != finalPos)
+        {
+            ratio += Time.deltaTime * multiplier;
+            spawnedPrefab.transform.position = Vector3.Lerp(previousPos, finalPos, ratio);
+            spawnedPrefab.transform.rotation *= Angle;
         }
     }
 }
