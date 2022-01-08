@@ -6,29 +6,29 @@ using UnityEngine.XR.ARFoundation;
 public class MovingScript : MonoBehaviour
 {
     [SerializeField]
-    ARRaycastManager m_RaycastManager;
+    private ARRaycastManager m_RaycastManager;
     [SerializeField]
     GameObject spawnedPrefab;
     List<ARRaycastHit> m_Hits = new List<ARRaycastHit>();
-    Vector3 previousPos;
-    Vector3 finalPos;
-    Quaternion Angle;
-    float ratio;
-    float duration;
-    float multiplier;
 
-    void Start()
+    private Vector3 previousPosition;
+    private Vector3 finalPosition;
+    private Vector3 diff;
+    private float angle;
+    private float ratio;
+    private float duration;
+    private float multiplier;
+
+    private void Start()
     {
-        previousPos = new Vector3(0f, -0.2f, 0.5f); //helicopter starting location
-        finalPos = new Vector3();
         duration = 0.9f;    //animation duration control
         multiplier = 1 / duration;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (Input.touchCount > 0 && spawnedPrefab.transform.position == finalPos)
+        if (Input.touchCount > 0 && spawnedPrefab.transform.position == finalPosition)
         {
             Touch touch = Input.GetTouch(0);
 
@@ -38,21 +38,22 @@ public class MovingScript : MonoBehaviour
 
                 if (m_Hits[0].trackable is ARPlane plane)
                 {
-                    previousPos = finalPos;
+                    previousPosition = spawnedPrefab.transform.position;
+                    finalPosition = m_Hits[0].pose.position;
                     ratio = 0;
-                    
-                    finalPos = m_Hits[0].pose.position;
-                    Angle.SetFromToRotation(previousPos, finalPos);
-                    Debug.Log(Angle);
+
+                    diff = finalPosition - previousPosition;
+                    angle = Mathf.Rad2Deg * Mathf.Atan2(diff.z, -diff.x);
+                    Debug.Log(angle);
+                    spawnedPrefab.transform.eulerAngles = angle * Vector3.up;
                 }
             }
         }
 
-        if (spawnedPrefab.transform.position != finalPos)
+        if (spawnedPrefab.transform.position != finalPosition)
         {
             ratio += Time.deltaTime * multiplier;
-            spawnedPrefab.transform.position = Vector3.Lerp(previousPos, finalPos, ratio);
-            spawnedPrefab.transform.rotation *= Angle;
+            spawnedPrefab.transform.position = Vector3.Lerp(previousPosition, finalPosition, ratio);
         }
     }
 }
