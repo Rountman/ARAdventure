@@ -38,6 +38,7 @@ public class MovingScript : MonoBehaviour
 
                 if (m_Hits[0].trackable is ARPlane plane)
                 {
+                    
                     previousPosition = spawnedPrefab.transform.position;
                     finalPosition = m_Hits[0].pose.position;
                     ratio = 0;
