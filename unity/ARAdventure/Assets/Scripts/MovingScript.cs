@@ -42,6 +42,9 @@ public class MovingScript : MonoBehaviour
                     finalPosition = m_Hits[0].pose.position;
                     ratio = 0;
 
+                    Debug.Log($"previousPosition: {previousPosition}");
+                    Debug.Log($"finalPosition: {finalPosition}");
+                    
                     diff = finalPosition - previousPosition;
                     angle = Mathf.Rad2Deg * Mathf.Atan2(diff.z, -diff.x);
                     Vector3 forward = spawnedPrefab.transform.forward;
