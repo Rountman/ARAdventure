@@ -44,8 +44,14 @@ public class MovingScript : MonoBehaviour
 
                     diff = finalPosition - previousPosition;
                     angle = Mathf.Rad2Deg * Mathf.Atan2(diff.z, -diff.x);
-                    Debug.Log(angle);
-                    spawnedPrefab.transform.eulerAngles = angle * Vector3.up;
+                    Vector3 forward = spawnedPrefab.transform.forward;
+                    //angle = Vector3.SignedAngle(diff, forward + finalPosition, Vector3.up);
+                    var rot = angle * Vector3.up;
+                    Debug.Log($"rot: {rot}");
+                    Debug.Log($"pre: {spawnedPrefab.transform.eulerAngles}");
+
+                    spawnedPrefab.transform.eulerAngles += angle * Vector3.up;
+                    Debug.Log("after: "+spawnedPrefab.transform.eulerAngles+" "+spawnedPrefab.transform.eulerAngles.GetType());
                 }
             }
         }
