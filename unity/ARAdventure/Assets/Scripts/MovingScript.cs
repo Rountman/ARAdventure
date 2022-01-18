@@ -38,7 +38,6 @@ public class MovingScript : MonoBehaviour
 
                 if (m_Hits[0].trackable is ARPlane plane)
                 {
-                    
                     previousPosition = spawnedPrefab.transform.position;
                     finalPosition = m_Hits[0].pose.position;
                     ratio = 0;
@@ -47,15 +46,12 @@ public class MovingScript : MonoBehaviour
                     Debug.Log($"finalPosition: {finalPosition}");
                     
                     diff = finalPosition - previousPosition;
-                    angle = Mathf.Rad2Deg * Mathf.Atan2(diff.z, -diff.x);
+                    angle = Mathf.Rad2Deg * Mathf.Atan2(diff.x, diff.z);
                     Vector3 forward = spawnedPrefab.transform.forward;
                     //angle = Vector3.SignedAngle(diff, forward + finalPosition, Vector3.up);
                     var rot = angle * Vector3.up;
-                    Debug.Log($"rot: {rot}");
-                    Debug.Log($"pre: {spawnedPrefab.transform.eulerAngles}");
 
-                    spawnedPrefab.transform.eulerAngles += angle * Vector3.up;
-                    Debug.Log("after: "+spawnedPrefab.transform.eulerAngles+" "+spawnedPrefab.transform.eulerAngles.GetType());
+                    spawnedPrefab.transform.eulerAngles = (angle) * Vector3.up;
                 }
             }
         }
