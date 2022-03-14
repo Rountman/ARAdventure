@@ -13,9 +13,12 @@ public class MovingScript : MonoBehaviour
 
     private Vector3 previousPosition;
     private Vector3 finalPosition;
+    private Vector3 previousRotation;
+    private Vector3 finalRotation;
     private Vector3 diff;
     private float angle;
     private float ratio;
+    private float ratio2;
     private float duration;
     private float multiplier;
 
@@ -39,19 +42,20 @@ public class MovingScript : MonoBehaviour
                 if (m_Hits[0].trackable is ARPlane plane)
                 {
                     previousPosition = spawnedPrefab.transform.position;
+                    previousRotation = spawnedPrefab.transform.eulerAngles;
                     finalPosition = m_Hits[0].pose.position;
                     ratio = 0;
 
-                    Debug.Log($"previousPosition: {previousPosition}");
-                    Debug.Log($"finalPosition: {finalPosition}");
-                    
+                    //spawnCube(plane);
+
+                    Debug.Log($"planePos: {plane.transform.position}");                    
+
                     diff = finalPosition - previousPosition;
+                    finalPosition.y += 0.05f;
                     angle = Mathf.Rad2Deg * Mathf.Atan2(diff.x, diff.z);
-                    Vector3 forward = spawnedPrefab.transform.forward;
-                    //angle = Vector3.SignedAngle(diff, forward + finalPosition, Vector3.up);
                     var rot = angle * Vector3.up;
 
-                    spawnedPrefab.transform.eulerAngles = (angle) * Vector3.up;
+                    finalRotation = angle * Vector3.up;
                 }
             }
         }
@@ -59,7 +63,14 @@ public class MovingScript : MonoBehaviour
         if (spawnedPrefab.transform.position != finalPosition)
         {
             ratio += Time.deltaTime * multiplier;
+            ratio2 += Time.deltaTime * multiplier;
             spawnedPrefab.transform.position = Vector3.Lerp(previousPosition, finalPosition, ratio);
+            spawnedPrefab.transform.eulerAngles = Vector3.Lerp(previousRotation, finalRotation, ratio2);
         }
+    }
+
+    private void spawnCube(ARPlane plane){
+        float planeX = plane.size.x;
+        //Vector2 planeZ = plane.size.z;
     }
 }
