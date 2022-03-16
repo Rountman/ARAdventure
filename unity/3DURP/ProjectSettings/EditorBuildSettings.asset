@@ -26,9 +26,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_App/Scenes/ARGallery.unity
     guid: fca9b9f0aebcd472abfe69016b9c1620
-  - enabled: 1
+  - enabled: 0
     path: Assets/_App/Scenes/PlanetScene.unity
     guid: c707f924e3fac4eeb92d95a2ff1d9614
+  - enabled: 1
+    path: Assets/_App/Scenes/ARAdventure.unity
+    guid: feb3c4064718d43198c2b403ae2d3c44
   m_configObjects:
     UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 5ae3569cb4fea4360a6ebb07afee7476, type: 2}
     com.unity.addressableassets: {fileID: 11400000, guid: a31ae29846982442db7c38dd1911a72a, type: 2}

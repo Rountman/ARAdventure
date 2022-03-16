@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
@@ -14,28 +13,26 @@ public class MovingScript : MonoBehaviour
     // Start is called before the first frame update
 
     [SerializeField] GameObject placedPrefab;
+    [SerializeField] ARRaycastManager raycaster;
     GameObject spawnedObject;
-    ARRaycastManager raycaster;
     List<ARRaycastHit> hits = new List<ARRaycastHit>();
+    bool runAnim;
+    float duration;
+    float multiplier;
+    float ratio;
+    float ratio2;
+    Vector3 previousPosition;
+    Vector3 previousRotation;
+    Vector3 finalPosition;
+    Vector3 finalRotation;
 
-    /*
-        private Vector3 previousPosition;
-        private Vector3 finalPosition;
-        private Vector3 previousRotation;
-        private Vector3 finalRotation;
-        private Vector3 diff;
-        private float angle;
-        private float ratio;
-        private float ratio2;
-        private float duration;
-        private float multiplier;
-    */
 
     void Start()
     {
-        /*duration = 0.9f;    //animation duration control
-        multiplier = 1 / duration;*/
-        raycaster = GetComponent<ARRaycastManager>();
+        duration = 0.9f;    //animation duration control
+        multiplier = 1 / duration;
+        ratio = 0;
+        ratio2 = 0;
     }
 
     void OnPlaceObject(InputValue value)
@@ -51,62 +48,59 @@ public class MovingScript : MonoBehaviour
             //if this is the first time placing an object
             if (spawnedObject == null)
             {
-                //instantiate the prefab at the hit position and rotation
                 spawnedObject = Instantiate(placedPrefab, hitPose.position, hitPose.rotation);
+                previousPosition = spawnedObject.transform.position;
+                finalPosition = hitPose.position;
             }
             else
             {
-                //change the position of the previously instantiated object
-                spawnedObject.transform.SetPositionAndRotation(hitPose.position, hitPose.rotation);
+                SetPositionAndRotation(hitPose);
             }
         }
+    }
+
+    void SetPositionAndRotation(Pose hitPose)
+    {
+
+        previousPosition = spawnedObject.transform.position;
+        previousRotation = spawnedObject.transform.eulerAngles;
+        finalPosition = hitPose.position;
+
+        Vector3 diff = finalPosition - previousPosition;
+        float angle = Mathf.Rad2Deg * Mathf.Atan2(diff.x, diff.z);
+        finalRotation = angle * Vector3.up;
+
+        runAnim = true;
+    }
+
+    void spawnCube(ARPlane plane)
+    {
+        float planeX = plane.size.x;
+
+        //Vector2 planeZ = plane.size.z;
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        /*if (Input.touchCount > 0 && spawnedPrefab.transform.position == finalPosition)
+        if (ARPlane)  //podmínka na detekci ARPlane
         {
-            Touch touch = Input.GetTouch(0);
 
-            if (touch.phase == TouchPhase.Began)
+        }
+        if (runAnim)
+        {
+            ratio += Time.deltaTime * 1.1f;
+            ratio2 += Time.deltaTime * 1.3f;
+            spawnedObject.transform.position = Vector3.Lerp(previousPosition, finalPosition, ratio);
+            spawnedObject.transform.eulerAngles = Vector3.Lerp(previousRotation, finalRotation, ratio2);
+
+            if (spawnedObject.transform.position == finalPosition)
             {
-                m_RaycastManager.Raycast(touch.position, m_Hits);
-
-                if (m_Hits[0].trackable is ARPlane plane)
-                {
-                    previousPosition = spawnedPrefab.transform.position;
-                    previousRotation = spawnedPrefab.transform.eulerAngles;
-                    finalPosition = m_Hits[0].pose.position;
-                    ratio = 0;
-
-                    //spawnCube(plane);
-
-                    Debug.Log($"planePos: {plane.transform.position}");
-
-                    diff = finalPosition - previousPosition;
-                    finalPosition.y += 0.05f;
-                    angle = Mathf.Rad2Deg * Mathf.Atan2(diff.x, diff.z);
-                    var rot = angle * Vector3.up;
-
-                    finalRotation = angle * Vector3.up;
-                }
+                ratio = 0;
+                ratio2 = 0;
+                runAnim = false;
             }
         }
-
-        if (spawnedPrefab.transform.position != finalPosition)
-        {
-            ratio += Time.deltaTime * multiplier;
-            ratio2 += Time.deltaTime * multiplier;
-            spawnedPrefab.transform.position = Vector3.Lerp(previousPosition, finalPosition, ratio);
-            spawnedPrefab.transform.eulerAngles = Vector3.Lerp(previousRotation, finalRotation, ratio2);
-        }*/
-    }
-
-    void spawnCube(ARPlane plane)
-    {
-        float planeX = plane.size.x;
-        //Vector2 planeZ = plane.size.z;
     }
 }
