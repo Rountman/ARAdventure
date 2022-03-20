@@ -41,6 +41,10 @@ public class MovingScript : MonoBehaviour
 
     void OnPlaceObject(InputValue value)
     {
+        if (runAnim)
+        {
+            return;
+        }
         //get the screen touch position
         Vector2 touchPosition = value.Get<Vector2>();
 
@@ -114,7 +118,7 @@ public class MovingScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (counter == 180)
+        if (counter == 180 && planeHeight != null)
         {
             SpawnCube();
             counter = 0;
